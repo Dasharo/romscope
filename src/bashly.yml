@@ -1,0 +1,28 @@
+name: cli
+help: Sample application
+version: 0.1.0
+
+commands:
+- name: extract
+  alias: e
+  help: Extract subregions from a coreboot binary
+
+  args:
+  - name: rom
+    required: true
+    help: Path to coreboot binary
+  - name: output
+    help: "Directory to extract to (default: [romname].extracted)"
+
+  examples:
+  - cli extract coreboot.rom
+
+dependencies:
+  cbfstool:
+    command: [cbfstool]
+    help: >
+      You can install from your distribution's package repositories or build from source code: https://review.coreboot.org/coreboot.git
+  ifdtool:
+    command: [ifdtool]
+    help: >
+      You can install from your distribution's package repositories or build from source code: https://review.coreboot.org/coreboot.git
