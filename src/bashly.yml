@@ -5,7 +5,7 @@ version: 0.1.0
 commands:
 - name: extract
   alias: e
-  help: Extract subregions from a coreboot binary
+  help: Extract subregions from a firmware binary
 
   args:
   - name: rom
@@ -17,6 +17,18 @@ commands:
   examples:
   - cli extract coreboot.rom
 
+- name: compare
+  alias: c
+  help: Compare two binaries
+
+  args:
+  - name: rom1
+    required: true
+    help: First ROM to compare
+  - name: rom2
+    required: true
+    help: Second ROM to compare
+
 dependencies:
   cbfstool:
     command: [cbfstool]
@@ -26,3 +38,7 @@ dependencies:
     command: [ifdtool]
     help: >
       You can install from your distribution's package repositories or build from source code: https://review.coreboot.org/coreboot.git
+  diffoscope:
+    command: [ifdtool]
+    help: >
+      You can install from your distribution's package repositories or build from source code: https://diffoscope.org/
