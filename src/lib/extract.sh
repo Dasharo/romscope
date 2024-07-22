@@ -48,7 +48,7 @@ rom_extract() {
 	fi
 	if is_fmap_rom $rom_file; then
 		echo "ROM contains a coreboot FMAP"
-		regions=$(cbfstool novacustom_v56x_mtl_v0.9.0.rom layout -w \
+		regions=$(cbfstool $rom_file layout -w \
 		    | grep \' \
 		    | cut -d \' -f 2 \
 		    | grep -v -e "SI_ALL" -e "SI_BIOS" -e "RW_SECTION_A" -e "RW_SECTION_B" -e "RW_MISC" -e "UNIFIED_MRC_CACHE" -e "RW_SHARED" -e "WP_RO" -e "RO_SECTION"
