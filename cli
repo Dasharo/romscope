@@ -222,6 +222,10 @@ inspect_args() {
 
 # :command.user_lib
 # src/lib/extract.sh
+# SPDX-FileCopyrightText: 2024 3mdeb Sp. z o. o.
+#
+# SPDX-License-Identifier: MIT
+
 
 is_ifd_rom() {
 	filetype=$(file -b $1)
@@ -262,7 +266,7 @@ rom_extract() {
 	fi
 	if is_fmap_rom $rom_file; then
 		echo "ROM contains a coreboot FMAP"
-		regions=$(cbfstool novacustom_v56x_mtl_v0.9.0.rom layout -w \
+		regions=$(cbfstool $rom_file layout -w \
 		    | grep \' \
 		    | cut -d \' -f 2 \
 		    | grep -v -e "SI_ALL" -e "SI_BIOS" -e "RW_SECTION_A" -e "RW_SECTION_B" -e "RW_MISC" -e "UNIFIED_MRC_CACHE" -e "RW_SHARED" -e "WP_RO" -e "RO_SECTION"
@@ -293,6 +297,10 @@ rom_extract() {
 # :command.function
 cli_extract_command() {
   # src/extract_command.sh
+  # SPDX-FileCopyrightText: 2024 3mdeb Sp. z o. o.
+  #
+  # SPDX-License-Identifier: MIT
+
   ROM_FILE=$(realpath "${args[rom]}")
   OUTPUT_DIR="${args[output]}"
 
@@ -303,6 +311,10 @@ cli_extract_command() {
 # :command.function
 cli_compare_command() {
   # src/compare_command.sh
+  # SPDX-FileCopyrightText: 2024 3mdeb Sp. z o. o.
+  #
+  # SPDX-License-Identifier: MIT
+
   ROM1_FILE=$(realpath "${args[rom1]}")
   ROM2_FILE=$(realpath "${args[rom2]}")
   OUTPUT_DIR="${args[output]}"

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2024 3mdeb Sp. z o. o.
+#
+# SPDX-License-Identifier: MIT
+
 name: cli
 help: Sample application
 version: 0.1.0

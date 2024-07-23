@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2024 3mdeb Sp. z o. o.
+#
+# SPDX-License-Identifier: MIT
+
 ## Add any function here that is needed in more than one parts of your
 ## application, or that you otherwise wish to extract from the main function
 ## scripts.

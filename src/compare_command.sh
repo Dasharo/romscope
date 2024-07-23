@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2024 3mdeb Sp. z o. o.
+#
+# SPDX-License-Identifier: MIT
+
 ROM1_FILE=$(realpath "${args[rom1]}")
 ROM2_FILE=$(realpath "${args[rom2]}")
 OUTPUT_DIR="${args[output]}"
