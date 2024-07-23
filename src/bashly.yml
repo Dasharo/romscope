@@ -2,8 +2,8 @@
 #
 # SPDX-License-Identifier: MIT
 
-name: cli
-help: Sample application
+name: romscope
+help: A tool for comparing firmware binaries
 version: 0.1.0
 
 commands:
@@ -32,6 +32,8 @@ commands:
   - name: rom2
     required: true
     help: Second ROM to compare
+  - name: output
+    help: "Directory to put report to (default: report)"
 
 dependencies:
   cbfstool:
