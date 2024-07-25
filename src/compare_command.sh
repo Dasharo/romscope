@@ -13,6 +13,16 @@ main () {
 		rm -r $WORKDIR
 	fi
 
+  if [ ! -f "$ROM1_FILE" ]; then
+		echo "File $ROM1_FILE does not exist. Please input a valid ROM file path."
+		return 1
+	fi
+
+	if [ ! -f "$ROM2_FILE" ]; then
+		echo "File $ROM2_FILE does not exist. Please input a valid ROM file path."
+		return 1
+	fi
+
 	echo "Extracting file $ROM1_FILE"
 	mkdir -p $WORKDIR/a
 	rom_extract $ROM1_FILE $WORKDIR/a > /dev/null
