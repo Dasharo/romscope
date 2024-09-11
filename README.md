@@ -74,6 +74,38 @@ Report placed in folder: 'report'
 You can optionally specify an output directory. By default, the reports are
 placed in a folder named `reports` in the current working directory.
 
+#### Interpreting results
+
+Consider the scenario: we have a release candidate binary and a final binary.
+Only the version number was changed in the code. We want to prove that changing
+the version number functionally does not influence any other portion of the
+binary, which ensures that test results for the release candidate are also valid
+for the final binary.
+
+Go through each of the generated files in the report directory. You will see
+that there are a number of categories of differences:
+
+- String differences: notably, the config and build_info files will indicate
+  a different version number and git revision.
+  If an EC binary is included and has a different git revision, it will also be
+  reported. These differences are non-functional and should not impact firmware
+  features other than cosmetic and identification.
+- Compression differences: a small difference in the version string may result
+  in a large difference of a compressed section which includes the change.
+  romscope tries to decompress every file it can to eliminate these, but
+  something may slip through the cracks.
+- Differences in program data: these can be categorized as:
+  - address differences: Some addresses will be different due to a different
+    layout of data in the flash.
+  - minor instruction differences: Sometimes a shorter or longer instruction may
+    be used due to different packing. Sometimes, an extra `NOP` may be placed.
+    These are a result of packing requirements and should not impact
+    functionality.
+  - major program differences: It's possible that more than one change was
+    included. In such cases manual inspection of the changes must be made to
+    make a decision whether the offending change invalidates test results or
+    not.
+
 ## Dependencies
 
 - cbfstool
