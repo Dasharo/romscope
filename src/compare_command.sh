@@ -13,7 +13,7 @@ main () {
 		rm -r $WORKDIR
 	fi
 
-  if [ ! -f "$ROM1_FILE" ]; then
+	if [ ! -f "$ROM1_FILE" ]; then
 		echo "File $ROM1_FILE does not exist. Please input a valid ROM file path."
 		return 1
 	fi
@@ -46,7 +46,13 @@ main () {
 	pushd $WORKDIR > /dev/null
 	files=$(cat a/manifest \
 		| cut -d ' ' -f 2 \
-		| grep -v -e "regions/fmap/FW_MAIN_A.bin" -e "regions/fmap/FW_MAIN_B.bin" -e "regions/fmap/COREBOOT.bin" -e "regions/fmap/VBLOCK_A.bin" -e "regions/fmap/VBLOCK_B.bin" -e "regions/fmap/GBB.bin" -e "regions/ifd/flashregion" \
+		| grep -v -e "regions/fmap/FW_MAIN_A.bin" \
+		          -e "regions/fmap/FW_MAIN_B.bin" \
+		          -e "regions/fmap/COREBOOT.bin" \
+		          -e "regions/fmap/VBLOCK_A.bin" \
+		          -e "regions/fmap/VBLOCK_B.bin" \
+		          -e "regions/fmap/GBB.bin" \
+		          -e "regions/ifd/flashregion" \
 		)
 	files_match=1
 	for file in $files; do
@@ -58,7 +64,9 @@ main () {
 	done
 	vblocks=$(cat a/manifest \
 		| cut -d ' ' -f 2 \
-		| grep -e "regions/fmap/VBLOCK_A.bin" -e "regions/fmap/VBLOCK_B.bin" -e "regions/fmap/GBB.bin" \
+		| grep -e "regions/fmap/VBLOCK_A.bin" \
+		       -e "regions/fmap/VBLOCK_B.bin" \
+		       -e "regions/fmap/GBB.bin" \
 		)
 	vblocks_match=1
 	for vblock in $vblocks; do
@@ -80,7 +88,7 @@ main () {
 	else
 		echo "Not all files match. Check report for detailed information."
 		if [ -z "$OUTPUT_DIR" ]; then
-		 	OUTPUT_DIR="report"
+			OUTPUT_DIR="report"
 		fi
 		mkdir -p $OUTPUT_DIR
 		cp $WORKDIR/*.html $OUTPUT_DIR/
