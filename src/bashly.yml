@@ -45,6 +45,6 @@ dependencies:
     help: >
       You can install from your distribution's package repositories or build from source code: https://review.coreboot.org/coreboot.git
   diffoscope:
-    command: [ifdtool]
+    command: [diffoscope]
     help: >
       You can install from your distribution's package repositories or build from source code: https://diffoscope.org/
