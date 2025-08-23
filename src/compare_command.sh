@@ -53,6 +53,7 @@ main () {
 
 	pushd $WORKDIR > /dev/null
 	ibg_key_change=0
+	ibg_mixed_provisioning=0
 	extra_excludes=
 	km_file=$(find_file "regions/fmap/COREBOOT.cbfs/key_manifest.bin")
 	if [ -n "$km_file" ]; then
@@ -74,7 +75,9 @@ main () {
 		is_km_a=$(is_km_file "a/$km_file"; echo $?)
 		is_km_b=$(is_km_file "b/$km_file"; echo $?)
 		if [ "$is_km_a" -ne 0 ] || [ "$is_km_b" -ne 0 ]; then
-			: Dealing with at least one unprovisioned image
+			if [ "$is_km_a" -ne "$is_km_b" ]; then
+				ibg_mixed_provisioning=1
+			fi
 		elif cmp --quiet --bytes="$sig_offset" "a/$km_file" "b/$km_file"; then
 			echo "IBG keys match."
 		else
@@ -118,6 +121,7 @@ main () {
 		| sort -u
 		)
 	files_match=1
+	different=
 	for file in $files; do
 		# Creating missing file to get the diff.
 		if [ ! -e a/$file ]; then
@@ -128,6 +132,8 @@ main () {
 
 		if ! diff a/$file b/$file > /dev/null; then
 			files_match=0
+			different+=" $file"
+
 			echo "Generating report for $file"
 			diffoscope a/$file b/$file --html $(echo $file | tr \/ -).html &> /dev/null
 		fi
@@ -150,7 +156,9 @@ main () {
 	done
 	popd > /dev/null
 
-	if [ "$ibg_key_change" -eq 1 ]; then
+	if [ "$ibg_mixed_provisioning" -eq 1 ]; then
+		echo "Only one of the binaries seems to be provisioned for IBG."
+	elif [ "$ibg_key_change" -eq 1 ]; then
 		echo "Binaries are provisioned with different IBG keys."
 	fi
 
