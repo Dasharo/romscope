@@ -16,6 +16,10 @@ find_file() {
 	cat a/manifest b/manifest | cut -d ' ' -f 2 | grep -e "$1" | sort -u
 }
 
+stage() {
+	echo "===== $1 ====="
+}
+
 main () {
 	if [ -e $WORKDIR ]; then
 		rm -r $WORKDIR
@@ -30,6 +34,8 @@ main () {
 		echo "File $ROM2_FILE does not exist. Please input a valid ROM file path."
 		return 1
 	fi
+
+	stage Preparation
 
 	echo "Extracting file $ROM1_FILE"
 	mkdir -p $WORKDIR/a
@@ -50,6 +56,8 @@ main () {
 		echo $(sha256sum $file_entry) >> manifest
 	done
 	popd > /dev/null
+
+	stage Comparison
 
 	pushd $WORKDIR > /dev/null
 	ibg_key_change=0
@@ -155,6 +163,8 @@ main () {
 		fi
 	done
 	popd > /dev/null
+
+	stage Conclusions
 
 	if [ "$ibg_mixed_provisioning" -eq 1 ]; then
 		echo "Only one of the binaries seems to be provisioned for IBG."
