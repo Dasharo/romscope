@@ -44,7 +44,7 @@ main () {
 	popd > /dev/null
 
 	pushd $WORKDIR > /dev/null
-	files=$(cat a/manifest \
+	files=$(cat a/manifest b/manifest \
 		| cut -d ' ' -f 2 \
 		| grep -v -e "regions/fmap/FW_MAIN_A.bin" \
 		          -e "regions/fmap/FW_MAIN_B.bin" \
@@ -53,20 +53,29 @@ main () {
 		          -e "regions/fmap/VBLOCK_B.bin" \
 		          -e "regions/fmap/GBB.bin" \
 		          -e "regions/ifd/flashregion" \
+		| sort -u
 		)
 	files_match=1
 	for file in $files; do
+		# Creating missing file to get the diff.
+		if [ ! -e a/$file ]; then
+			touch a/$file
+		elif [ ! -e b/$file ]; then
+			touch b/$file
+		fi
+
 		if ! diff a/$file b/$file > /dev/null; then
 			files_match=0
 			echo "Generating report for $file"
 			diffoscope a/$file b/$file --html $(echo $file | tr \/ -).html &> /dev/null
 		fi
 	done
-	vblocks=$(cat a/manifest \
+	vblocks=$(cat a/manifest b/manifest \
 		| cut -d ' ' -f 2 \
 		| grep -e "regions/fmap/VBLOCK_A.bin" \
 		       -e "regions/fmap/VBLOCK_B.bin" \
 		       -e "regions/fmap/GBB.bin" \
+		| sort -u
 		)
 	vblocks_match=1
 	for vblock in $vblocks; do
